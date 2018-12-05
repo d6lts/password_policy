@@ -32,13 +32,10 @@ function password_policy_constraint_digit_placement_error($constraint) {
  * Password validation.
  */
 function password_policy_constraint_digit_placement_validate($password, $constraint, $uid) {
-  $number_of_digits = 0;
-  for ($i=0; $i<10; $i++) {
-    // help string count by sending it a string instead of an int
-    $number_of_digits += substr_count($password, "$i");
-  }
-  if ($number_of_digits < (int)$constraint) {
-    return preg_match("/^(\d+)|(\d+)$/", $password) != 1;
+  $matches = array();
+  $num = preg_match_all('/[0-9]/', $password, $matches);
+  if ($num < (int) $constraint) {
+    return preg_match('/^(\d+)|(\d+)$/', $password) != 1;
   }
   return TRUE;
 }
